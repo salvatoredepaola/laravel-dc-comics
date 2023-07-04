@@ -10,9 +10,9 @@
                 <p>{{$comics->description}}</p>
                 <p>{{$comics->price}}</p>
                 <p>{{$comics->sale_date}}</p>
+                <p>{{$comics->writers}}</p>
             </div>
         </div>
-        <a class="btn btn-primary" href="{{ route("comics.index")}}">torna indietro</a>
     </div>
 
 </div>

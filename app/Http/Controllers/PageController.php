@@ -15,8 +15,10 @@ class PageController extends Controller
     public function index()
     {
         $comics = Comic::all();
-
-        return view("comics.index", compact("comics"));
+        $social = config('social');
+        $misc = config('misc.someLinks');
+        $links = config('store.someLinks');
+        return view("comics.index", compact('links', 'comics', 'misc', 'social'));
     }
 
     /**
@@ -49,8 +51,10 @@ class PageController extends Controller
     public function show($id)
     {
         $comics = Comic::find($id);
-
-        return view("comics.show", compact("comics"));
+        $social = config('social');
+        $misc = config('misc.someLinks');
+        $links = config('store.someLinks');
+        return view("comics.show", compact('links', 'comics', 'misc', 'social'));
     }
 
     /**

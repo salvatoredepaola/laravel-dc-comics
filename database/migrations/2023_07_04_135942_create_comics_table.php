@@ -21,6 +21,9 @@ return new class extends Migration
             $table->text("thumb")->nullable();
             $table->string("price");
             $table->date("sale_date");
+            $table->string("series");
+            $table->string("artists");
+            $table->string("writers");
 
             $table->timestamps();
         });
