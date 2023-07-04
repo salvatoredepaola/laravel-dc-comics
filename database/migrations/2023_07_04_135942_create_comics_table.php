@@ -22,6 +22,7 @@ return new class extends Migration
             $table->float("price", 3, 2);
             $table->date("sale_date");
 
+            $table->timestamps();
         });
     }
 
