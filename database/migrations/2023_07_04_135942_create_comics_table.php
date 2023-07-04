@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->string("title", 255);
             $table->text("description");
-            $table->string("thumb")->nullable();
-            $table->float("price", 3, 2);
+            $table->text("thumb")->nullable();
+            $table->string("price");
             $table->date("sale_date");
 
             $table->timestamps();
