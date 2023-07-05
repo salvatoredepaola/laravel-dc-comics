@@ -28,7 +28,10 @@ class PageController extends Controller
      */
     public function create()
     {
-        //
+        $social = config('social');
+        $misc = config('misc.someLinks');
+        $links = config('store.someLinks');
+        return view("comics.create", compact('links', 'misc', 'social'));
     }
 
     /**
@@ -39,7 +42,19 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $newComic = new Comic();
+        $newComic->title = $data["title"];
+        $newComic->description = $data["description"];
+        $newComic->thumb = $data["thumb"];
+        $newComic->price = $data["price"];
+        $newComic->sale_date = $data["sale_date"];
+        $newComic->series = $data["series"];
+        $newComic->save();
+
+        return redirect()->route("comics.show", $newComic->id);
+
     }
 
     /**
@@ -48,13 +63,15 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+
+    // public function show($id)
+    public function show(Comic $comic)
     {
-        $comics = Comic::find($id);
+        // $comics = Comic::find($id);
         $social = config('social');
         $misc = config('misc.someLinks');
         $links = config('store.someLinks');
-        return view("comics.show", compact('links', 'comics', 'misc', 'social'));
+        return view("comics.show", compact('links', 'comic', 'misc', 'social'));
     }
 
     /**
@@ -63,9 +80,12 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Comic $comic)
     {
-        //
+        $social = config('social');
+        $misc = config('misc.someLinks');
+        $links = config('store.someLinks');
+        return view("comics.edit", compact('links', 'comic', 'misc', 'social'));
     }
 
     /**
@@ -75,9 +95,23 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
-        //
+        $data = $request->all();
+
+        $comic->title = $data["title"];
+        $comic->description = $data["description"];
+        $comic->thumb = $data["thumb"];
+        $comic->price = $data["price"];
+        $comic->sale_date = $data["sale_date"];
+        $comic->series = $data["series"];
+        $comic->update();
+
+        $comic->update($data);
+
+        return redirect()->route("comics.show", $comic->id);
+        // return view("comics.index");
+
     }
 
     /**
@@ -86,8 +120,9 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comic $comic)
     {
-        //
+        $comic->delete();
+        return redirect()->route("comics.index");
     }
 }

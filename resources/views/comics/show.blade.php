@@ -2,16 +2,30 @@
 
 @section('content')
 <div class="container my-3">
-    <h1>Welcome Page: {{$comics->title}}</h1>
-    <div class="row g-4">
+    <div class="row">
         <div class="col">
-            <div>
-                <img src="{{$comics->thumb}}" alt="{{$comics->title}}">
-                <p>{{$comics->description}}</p>
-                <p>{{$comics->price}}</p>
-                <p>{{$comics->sale_date}}</p>
-                <p>{{$comics->writers}}</p>
-            </div>
+
+            <h1>{{$comic->title}}</h1>
+            <p>Descrizione: {{$comic->description}}</p>
+            <p>Prezzo: {{$comic->price}}</p>
+            <p>Vendita: {{$comic->sale_date}}</p>
+
+            <a class="btn btn-warning" href="{{route("comics.edit", $comic->id)}}">Modifica</a>
+
+            <form action="{{ route("comics.destroy", $comic)}}" method="post">
+                @csrf
+                @method("DELETE")
+                <input class="btn btn-danger" type="submit" value="Elimina fumetto">
+            </form>
+
+        </div>
+        <div class="col d-flex justify-content-center ">
+            @if ($comic->thumb)
+                <img class="preview " src="{{$comic->thumb}}" alt="{{$comic->title}}">
+            @else
+                <img class="preview " src="https://static.dc.com/2022-06/dc_logo16x9.png" alt="{{$comic->title}}">
+            @endif
+
         </div>
     </div>
 

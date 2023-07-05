@@ -8,21 +8,19 @@
                 @foreach ($comics as $comic)
                 <a href="{{ route("comics.show", $comic->id) }}">
                     <div class="card mb-2">
-                        <img class="mb-3" src="{{ $comic->thumb }}" alt="{{ $comic->title }}">
+                        @if ($comic->thumb)
+                            <img class="preview " src="{{$comic->thumb}}" alt="{{$comic->title}}">
+                        @else
+                            <img class="preview " src="https://static.dc.com/2022-06/dc_logo16x9.png" alt="{{$comic->title}}">
+                        @endif
                         <p class="text-light text-center">
                             {{ $comic->title }}
                         </p>
                     </div>
                 </a>
                 @endforeach
-                {{-- @foreach ($comics as $comic)
-                <div class="card mb-2">
-                    <img class="mb-3" src="{{ $comic['thumb'] }}" alt="comic.series">
-                    <p class="text-light text-center">
-                        {{ $comic['title'] }}
-                    </p>
-                </div>
-                @endforeach --}}
+                <a class="btn btn-primary" href="{{route("comics.create")}}">Crea Comic</a>
+
             </div>
         </div>
     </div>

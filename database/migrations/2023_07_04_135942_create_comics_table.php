@@ -22,8 +22,6 @@ return new class extends Migration
             $table->string("price");
             $table->date("sale_date");
             $table->string("series");
-            $table->string("artists");
-            $table->string("writers");
 
             $table->timestamps();
         });
