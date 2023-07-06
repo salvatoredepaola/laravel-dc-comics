@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Comic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class PageController extends Controller
 {
@@ -34,6 +36,22 @@ class PageController extends Controller
         return view("comics.create", compact('links', 'misc', 'social'));
     }
 
+    private function validateComic($data) {
+        $validator = Validator::make($data, [
+            "title" => "required|min:5|max:100",
+            "description" => "min:5|max:65535",
+            "price" => "required|max:20",
+            "sale_date" => "required|max:20",
+            "series" => "min:5|max:20"
+        ], [
+            "title.required" => "Titolo mancante",
+            "title.min" => "Titolo troppo corto, minimo :min caratteri",
+            "title.max" => "Titolo troppo lungo, massimo :max caratteri",
+        ])->validate();
+
+        return $validator;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -42,8 +60,20 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        // $data = $request->except(['_token', '_method']);
 
+        
+        // $request->validate([
+        //     "title" => "required|min:5|max:100",
+        //     "description" => "min:5|max:65535",
+        //     "price" => "required|max:20",
+        //     "sale_date" => "required|max:20",
+        //     "series" => "min:5|max:20"
+        // ]);
+        // $data = $request->all();
+
+        $data = $this->validateComic( $request->all());
+        
         $newComic = new Comic();
         $newComic->title = $data["title"];
         $newComic->description = $data["description"];
@@ -51,6 +81,7 @@ class PageController extends Controller
         $newComic->price = $data["price"];
         $newComic->sale_date = $data["sale_date"];
         $newComic->series = $data["series"];
+
         $newComic->save();
 
         return redirect()->route("comics.show", $newComic->id);
@@ -97,7 +128,8 @@ class PageController extends Controller
      */
     public function update(Request $request, Comic $comic)
     {
-        $data = $request->all();
+        
+        $data = $this->validateComic( $request->all());
 
         $comic->title = $data["title"];
         $comic->description = $data["description"];
