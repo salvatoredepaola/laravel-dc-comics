@@ -49,7 +49,7 @@
 
                 {{-- sale_date --}}
                 <label for="name">Sale date</label>
-                <input class="form-control @error("sale_date") is-invalid @enderror " type="number" name="sale_date" value="@error("description") {{old("sale_date")}} @enderror">
+                <input class="form-control @error("sale_date") is-invalid @enderror " type="text" name="sale_date" value="@error("description") {{old("sale_date")}} @enderror">
                 @error("sale_date")
                     <div class="invalid-feedback mb-4">{{$message}}</div>
                 @enderror

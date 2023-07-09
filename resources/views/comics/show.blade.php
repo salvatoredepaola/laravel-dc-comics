@@ -6,9 +6,10 @@
         <div class="col">
 
             <h1>{{$comic->title}}</h1>
-            <p>Descrizione: {{$comic->description}}</p>
-            <p>Prezzo: {{$comic->price}}</p>
-            <p>Vendita: {{$comic->sale_date}}</p>
+            <p>Description: {{$comic->description}}</p>
+            <p>Series: {{$comic->series}}</p>
+            <p>Price: {{$comic->price}}</p>
+            <p>Sale date: {{$comic->sale_date}}</p>
 
             <a class="btn btn-warning" href="{{route("comics.edit", $comic->id)}}">Modifica</a>
 

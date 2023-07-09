@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreComicRequest;
+use App\Http\Requests\UpdateComicRequest;
 use App\Models\Comic;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Facades\Validator;
 
 
 class PageController extends Controller
@@ -36,56 +38,21 @@ class PageController extends Controller
         return view("comics.create", compact('links', 'misc', 'social'));
     }
 
-    private function validateComic($data) {
-        $validator = Validator::make($data, [
-            "title" => "required|min:5|max:100",
-            "description" => "min:5|max:65535",
-            "price" => "required|max:20",
-            "sale_date" => "required|max:20",
-            "series" => "min:5|max:20"
-        ], [
-            "title.required" => "Titolo mancante",
-            "title.min" => "Titolo troppo corto, minimo :min caratteri",
-            "title.max" => "Titolo troppo lungo, massimo :max caratteri",
-        ])->validate();
-
-        return $validator;
-    }
-
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StoreComicRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreComicRequest $request)
     {
-        // $data = $request->except(['_token', '_method']);
+        $data = $request->validated();
 
-        
-        // $request->validate([
-        //     "title" => "required|min:5|max:100",
-        //     "description" => "min:5|max:65535",
-        //     "price" => "required|max:20",
-        //     "sale_date" => "required|max:20",
-        //     "series" => "min:5|max:20"
-        // ]);
-        // $data = $request->all();
-
-        $data = $this->validateComic( $request->all());
-        
         $newComic = new Comic();
-        $newComic->title = $data["title"];
-        $newComic->description = $data["description"];
-        $newComic->thumb = $data["thumb"];
-        $newComic->price = $data["price"];
-        $newComic->sale_date = $data["sale_date"];
-        $newComic->series = $data["series"];
-
+        $newComic->fill($data);
         $newComic->save();
 
         return redirect()->route("comics.show", $newComic->id);
-
     }
 
     /**
@@ -122,26 +89,19 @@ class PageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\UpdateComicRequest  $request
+     * @param  Comic  $comic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comic $comic)
+    public function update(UpdateComicRequest $request, Comic $comic)
     {
-        
-        $data = $this->validateComic( $request->all());
-
-        $comic->title = $data["title"];
-        $comic->description = $data["description"];
-        $comic->thumb = $data["thumb"];
-        $comic->price = $data["price"];
-        $comic->sale_date = $data["sale_date"];
-        $comic->series = $data["series"];
+        $data = $request->validated();
+        $comic->fill($data);
         $comic->update();
 
-        $comic->update($data);
 
-        return redirect()->route("comics.show", $comic->id);
+        return to_route("comics.show", $comic);
+        // return redirect()->route("comics.show", $comic); 
         // return view("comics.index");
 
     }

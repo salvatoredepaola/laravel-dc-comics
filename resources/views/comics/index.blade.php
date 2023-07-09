@@ -19,8 +19,11 @@
                     </div>
                 </a>
                 @endforeach
-                <a class="btn btn-primary" href="{{route("comics.create")}}">Crea Comic</a>
-
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <a class="btn btn-primary" href="{{route("comics.create")}}">crea comic</a>
             </div>
         </div>
     </div>
